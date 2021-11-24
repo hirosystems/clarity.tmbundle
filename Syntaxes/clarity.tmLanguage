@@ -96,7 +96,7 @@
         <string>"</string>
         <key>beginCaptures</key>
         <dict>
-          <key>0</key>
+          <key>1</key>
           <dict>
             <key>name</key>
             <string>punctuation.definition.string.begin.clarity</string>
@@ -106,7 +106,7 @@
         <string>"</string>
         <key>endCaptures</key>
         <dict>
-          <key>0</key>
+          <key>1</key>
           <dict>
             <key>name</key>
             <string>punctuation.definition.string.end.clarity</string>

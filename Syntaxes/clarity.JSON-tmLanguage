@@ -49,13 +49,13 @@
       "name": "string.quoted.double.clarity",
       "begin": "\"",
       "beginCaptures": {
-        "0": {
+        "1": {
           "name": "punctuation.definition.string.begin.clarity"
         }
       },
       "end": "\"",
       "endCaptures": {
-        "0": {
+        "1": {
           "name": "punctuation.definition.string.end.clarity"
         }
       },
