@@ -3,9 +3,9 @@
 <plist version="1.0">
   <dict>
     <key>name</key>
-    <string>clarity2</string>
+    <string>clarity</string>
     <key>scopeName</key>
-    <string>source.clarity</string>
+    <string>source.clar</string>
     <key>uuid</key>
     <string>f9e9871d-2ea6-4be0-afd2-fc382d704716</string>
     <key>patterns</key>
@@ -57,7 +57,10 @@
         <key>name</key>
         <string>storage.type.clarity</string>
         <key>match</key>
-        <string>(?x) (?&lt;=^|[\s:(){},]) (tuple|list|response|optional|buff|string-ascii|string-utf8|principal|bool|int|uint) (?=[\s(){},])</string>
+        <string>(?x)
+(?&lt;=^|[\s:(){},])
+(tuple|list|response|optional|buff|string-ascii|string-utf8|principal|bool|int|uint)
+(?=[\s(){},])</string>
       </dict>
       <key>keyword</key>
       <dict>
@@ -77,13 +80,9 @@
         <key>match</key>
         <string>(?x)
   (?&lt;=^|[\s:(){},])
-  # principal address + trait + contract address
   \'[0-9A-Z]{28,41}(:?\.[a-zA-Z][a-zA-Z0-9\-]+){0,2}|
-  # hex values
   0x[0-9a-f]{2,}|
-  # unsigned integers
   u[0-9]+|
-  # integers
   [0-9]+
   (?=[\s(){},]|$)
 </string>
@@ -96,21 +95,25 @@
         <string>"</string>
         <key>beginCaptures</key>
         <dict>
-          <key>1</key>
-          <dict>
-            <key>name</key>
-            <string>punctuation.definition.string.begin.clarity</string>
-          </dict>
+          <key>0</key>
+          <array>
+            <dict>
+              <key>name</key>
+              <string>punctuation.definition.string.begin.clarity</string>
+            </dict>
+          </array>
         </dict>
         <key>end</key>
         <string>"</string>
         <key>endCaptures</key>
         <dict>
-          <key>1</key>
-          <dict>
-            <key>name</key>
-            <string>punctuation.definition.string.end.clarity</string>
-          </dict>
+          <key>0</key>
+          <array>
+            <dict>
+              <key>name</key>
+              <string>punctuation.definition.string.end.clarity</string>
+            </dict>
+          </array>
         </dict>
         <key>patterns</key>
         <array>
