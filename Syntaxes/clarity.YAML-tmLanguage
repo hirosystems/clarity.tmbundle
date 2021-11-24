@@ -1,3 +1,4 @@
+$schema: https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
 name: clarity
 scopeName: source.clar
 uuid: f9e9871d-2ea6-4be0-afd2-fc382d704716
@@ -52,11 +53,11 @@ repository:
     begin: '"'
     beginCaptures:
       "0":
-        - name: punctuation.definition.string.begin.clarity
+        name: punctuation.definition.string.begin.clarity
     end: '"'
     endCaptures:
       "0":
-        - name: punctuation.definition.string.end.clarity
+        name: punctuation.definition.string.end.clarity
     patterns:
       - include: "#escape-char"
 

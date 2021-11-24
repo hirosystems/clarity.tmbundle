@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <key>$schema</key>
+    <string>https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json</string>
     <key>name</key>
     <string>clarity</string>
     <key>scopeName</key>
@@ -96,24 +98,20 @@
         <key>beginCaptures</key>
         <dict>
           <key>0</key>
-          <array>
-            <dict>
-              <key>name</key>
-              <string>punctuation.definition.string.begin.clarity</string>
-            </dict>
-          </array>
+          <dict>
+            <key>name</key>
+            <string>punctuation.definition.string.begin.clarity</string>
+          </dict>
         </dict>
         <key>end</key>
         <string>"</string>
         <key>endCaptures</key>
         <dict>
           <key>0</key>
-          <array>
-            <dict>
-              <key>name</key>
-              <string>punctuation.definition.string.end.clarity</string>
-            </dict>
-          </array>
+          <dict>
+            <key>name</key>
+            <string>punctuation.definition.string.end.clarity</string>
+          </dict>
         </dict>
         <key>patterns</key>
         <array>
