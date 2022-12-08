@@ -14,35 +14,39 @@
     <array>
       <dict>
         <key>include</key>
-        <string>#comment</string>
+        <string>#expression</string>
       </dict>
       <dict>
         <key>include</key>
-        <string>#datatype</string>
+        <string>#define-constant</string>
       </dict>
       <dict>
         <key>include</key>
-        <string>#keyword</string>
+        <string>#define-data-var</string>
       </dict>
       <dict>
         <key>include</key>
-        <string>#number</string>
+        <string>#define-map</string>
       </dict>
       <dict>
         <key>include</key>
-        <string>#string</string>
+        <string>#define-function</string>
       </dict>
       <dict>
         <key>include</key>
-        <string>#define</string>
+        <string>#define-fungible-token</string>
       </dict>
       <dict>
         <key>include</key>
-        <string>#lang-func</string>
+        <string>#define-non-fungible-token</string>
       </dict>
       <dict>
         <key>include</key>
-        <string>#tuple-key</string>
+        <string>#define-trait</string>
+      </dict>
+      <dict>
+        <key>include</key>
+        <string>#use-trait</string>
       </dict>
     </array>
     <key>repository</key>
@@ -54,277 +58,1313 @@
         <key>match</key>
         <string>(?x) (?&lt;=^|[()\[\]{}",'`;\s]) (;) .* $</string>
       </dict>
-      <key>datatype</key>
+      <key>expression</key>
       <dict>
-        <key>name</key>
-        <string>storage.type.clarity</string>
-        <key>match</key>
-        <string>(?x)
-(?&lt;=^|[\s:(){},])
-(tuple|list|response|optional|buff|string-ascii|string-utf8|principal|bool|int|uint)
-(?=[\s(){},])</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#comment</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#keyword</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#literal</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#let-func</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#built-in-func</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#get-set-func</string>
+          </dict>
+        </array>
       </dict>
       <key>keyword</key>
       <dict>
         <key>name</key>
         <string>constant.language.clarity</string>
         <key>match</key>
-        <string>(?x)
-  (?&lt;=^|[\s:(){},]) 
-  (?:block-height|burn-block-height|contract-caller|false|is-in-regtest|none|stx-liquid-supply|true|tx-sender)
-  (?=[\s(){},])
-</string>
+        <string>\b(?:block-height|burn-block-height|chain-id|contract-caller|is-in-regtest|stx-liquid-supply|tx-sender|tx-sponsor?)\b</string>
       </dict>
-      <key>number</key>
+      <key>define-function</key>
       <dict>
-        <key>name</key>
-        <string>constant.numeric.clarity</string>
-        <key>match</key>
-        <string>(?x)
-  (?&lt;=^|[\s:(){},])
-  \'[0-9A-Z]{28,41}(:?\.[a-zA-Z][a-zA-Z0-9\-]+){0,2}|
-  0x[0-9a-f]{2,}|
-  u[0-9]+|
-  [0-9]+
-  (?=[\s(){},]|$)
-</string>
-      </dict>
-      <key>string</key>
-      <dict>
-        <key>name</key>
-        <string>string.quoted.double.clarity</string>
         <key>begin</key>
-        <string>"</string>
-        <key>beginCaptures</key>
-        <dict>
-          <key>0</key>
-          <dict>
-            <key>name</key>
-            <string>punctuation.definition.string.begin.clarity</string>
-          </dict>
-        </dict>
+        <string>(?x) (\() \s* (define-(?:public|private|read-only)) \s+</string>
         <key>end</key>
-        <string>"</string>
-        <key>endCaptures</key>
-        <dict>
-          <key>0</key>
-          <dict>
-            <key>name</key>
-            <string>punctuation.definition.string.end.clarity</string>
-          </dict>
-        </dict>
-        <key>patterns</key>
-        <array>
-          <dict>
-            <key>include</key>
-            <string>#escape-char</string>
-          </dict>
-        </array>
-      </dict>
-      <key>escape-char</key>
-      <dict>
-        <key>name</key>
-        <string>constant.character.escape.clarity</string>
-        <key>match</key>
-        <string>\\.</string>
-      </dict>
-      <key>lang-func</key>
-      <dict>
-        <key>match</key>
-        <string>(?x)
-  (?&lt;=^|[(]) \s*
-  (
-    and|append|as-contract|as-max-len\?|asserts!|at-block|begin|concat|contract-call\?|contract-of|
-    default-to|element-at|err|filter|fold|ft-burn\?|ft-get-balance|ft-get-supply|ft-mint\?|ft-transfer\?|
-    get|get-block-info\?|hash160|if|impl-trait|index-of|is-eq|is-err|is-none|is-ok|is-some|keccak256|
-    len|let|list|log2|map|map-delete|map-get\?|map-insert|map-set|match|merge|mod|nft-burn\?|nft-get-owner\?|
-    nft-mint\?|nft-transfer\?|not|ok|or|pow|principal-of\?|print|secp256k1-recover\?|secp256k1-verify|sha256|
-    sha512|sha512/256|some|sqrti|stx-burn\?|stx-get-balance|stx-transfer\?|to-int|to-uint|try!|unwrap-err-panic|
-    unwrap-err!|unwrap-panic|unwrap!|var-get|var-set|xor
-  ) \s+
-</string>
-        <key>name</key>
-        <string>keyword.control.clarity</string>
-      </dict>
-      <key>define</key>
-      <dict>
-        <key>patterns</key>
-        <array>
-          <dict>
-            <key>include</key>
-            <string>#define-func</string>
-          </dict>
-          <dict>
-            <key>include</key>
-            <string>#define-var</string>
-          </dict>
-          <dict>
-            <key>include</key>
-            <string>#set-func</string>
-          </dict>
-        </array>
-      </dict>
-      <key>set-func</key>
-      <dict>
-        <key>begin</key>
-        <string>(?x)
-  (?&lt;=^|[(]) \s*
-  (var-get|var-set|map-get\?|map-set|map-insert|get) \s+
-  ([a-z][a-zA-Z0-9_-]+) \s*
-</string>
+        <string>(\))</string>
         <key>beginCaptures</key>
         <dict>
           <key>1</key>
           <dict>
             <key>name</key>
-            <string>keyword.control.clarity</string>
+            <string>punctuation.define-function.start.clarity</string>
           </dict>
           <key>2</key>
           <dict>
             <key>name</key>
-            <string>variable.other.clarity</string>
+            <string>keyword.declaration.define-function.clarity</string>
           </dict>
         </dict>
-        <key>end</key>
-        <string>\)</string>
         <key>endCaptures</key>
-        <dict>
-          <key>0</key>
-          <dict>
-            <key>name</key>
-            <string>punctuation.section.end.clarity</string>
-          </dict>
-        </dict>
-        <key>patterns</key>
-        <array>
-          <dict>
-            <key>include</key>
-            <string>#lang-func</string>
-          </dict>
-          <dict>
-            <key>include</key>
-            <string>#tuple-key</string>
-          </dict>
-          <dict>
-            <key>include</key>
-            <string>#number</string>
-          </dict>
-        </array>
-      </dict>
-      <key>define-func</key>
-      <dict>
-        <key>begin</key>
-        <string>(?x)
-  (?&lt;=^|[(]) \s*
-  (define-(?:public|private|read-only)) \s+
-  (\() \s*
-  ([a-z][a-zA-Z0-9_-]+) \s*
-</string>
-        <key>beginCaptures</key>
         <dict>
           <key>1</key>
           <dict>
             <key>name</key>
-            <string>storage.type.clarity</string>
-          </dict>
-          <key>2</key>
-          <dict>
-            <key>name</key>
-            <string>punctuation.section.begin.clarity</string>
-          </dict>
-          <key>3</key>
-          <dict>
-            <key>name</key>
-            <string>entity.name.function.clarity</string>
+            <string>punctuation.define-function.end.clarity</string>
           </dict>
         </dict>
-        <key>end</key>
-        <string>\)</string>
-        <key>endCaptures</key>
-        <dict>
-          <key>0</key>
-          <dict>
-            <key>name</key>
-            <string>punctuation.section.end.clarity</string>
-          </dict>
-        </dict>
+        <key>name</key>
+        <string>meta.define-function</string>
         <key>patterns</key>
         <array>
           <dict>
             <key>include</key>
-            <string>#args</string>
+            <string>#expression</string>
+          </dict>
+          <dict>
+            <key>begin</key>
+            <string>(?x) (\() \s* ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s*</string>
+            <key>end</key>
+            <string>(\))</string>
+            <key>beginCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.function-signature.start.clarity</string>
+              </dict>
+              <key>2</key>
+              <dict>
+                <key>name</key>
+                <string>entity.name.function.clarity</string>
+              </dict>
+            </dict>
+            <key>endCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.function-signature.end.clarity</string>
+              </dict>
+            </dict>
+            <key>name</key>
+            <string>meta.define-function-signature</string>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>begin</key>
+                <string>(?x) (\() \s* ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+</string>
+                <key>end</key>
+                <string>(\))</string>
+                <key>beginCaptures</key>
+                <dict>
+                  <key>1</key>
+                  <dict>
+                    <key>name</key>
+                    <string>punctuation.function-argument.start.clarity</string>
+                  </dict>
+                  <key>2</key>
+                  <dict>
+                    <key>name</key>
+                    <string>variable.parameter.clarity</string>
+                  </dict>
+                </dict>
+                <key>endCaptures</key>
+                <dict>
+                  <key>1</key>
+                  <dict>
+                    <key>name</key>
+                    <string>punctuation.function-argument.end.clarity</string>
+                  </dict>
+                </dict>
+                <key>name</key>
+                <string>meta.function-argument</string>
+                <key>patterns</key>
+                <array>
+                  <dict>
+                    <key>include</key>
+                    <string>#data-type</string>
+                  </dict>
+                </array>
+              </dict>
+            </array>
           </dict>
         </array>
       </dict>
-      <key>define-var</key>
+      <key>define-fungible-token</key>
       <dict>
         <key>match</key>
-        <string>(?x)
-  (?&lt;=^[(]) \s*
-  (define-(?:constant|data-var|map|fungible-token|non-fungible-token|trait)) \s+
-  ([a-zA-Z][a-zA-Z0-9_-]+)
-</string>
+        <string>(?x) (\() \s* (define-fungible-token) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) (?:\s+(u\d+))?</string>
         <key>captures</key>
         <dict>
           <key>1</key>
           <dict>
             <key>name</key>
-            <string>storage.type.clarity</string>
+            <string>punctuation.define-fungible-token.start.clarity</string>
           </dict>
           <key>2</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.declaration.define-fungible-token.clarity</string>
+          </dict>
+          <key>3</key>
+          <dict>
+            <key>name</key>
+            <string>entity.name.fungible-token-name.clarity variable.other.clarity</string>
+          </dict>
+          <key>4</key>
+          <dict>
+            <key>name</key>
+            <string>constant.numeric.fungible-token-total-supply.clarity</string>
+          </dict>
+          <key>5</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.define-fungible-token.end.clarity</string>
+          </dict>
+        </dict>
+      </dict>
+      <key>define-non-fungible-token</key>
+      <dict>
+        <key>begin</key>
+        <string>(?x) (\() \s* (define-non-fungible-token) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+</string>
+        <key>end</key>
+        <string>(\))</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.define-non-fungible-token.start.clarity</string>
+          </dict>
+          <key>2</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.declaration.define-non-fungible-token.clarity</string>
+          </dict>
+          <key>3</key>
+          <dict>
+            <key>name</key>
+            <string>entity.name.non-fungible-token-name.clarity variable.other.clarity</string>
+          </dict>
+        </dict>
+        <key>endCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.define-non-fungible-token.end.clarity</string>
+          </dict>
+        </dict>
+        <key>name</key>
+        <string>meta.define-non-fungible-token</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#data-type</string>
+          </dict>
+        </array>
+      </dict>
+      <key>define-trait</key>
+      <dict>
+        <key>begin</key>
+        <string>(?x) (\() \s* (define-trait) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+</string>
+        <key>end</key>
+        <string>(\))</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.define-trait.start.clarity</string>
+          </dict>
+          <key>2</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.declaration.define-trait.clarity</string>
+          </dict>
+          <key>3</key>
+          <dict>
+            <key>name</key>
+            <string>entity.name.trait-name.clarity variable.other.clarity</string>
+          </dict>
+        </dict>
+        <key>endCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.define-trait.end.clarity</string>
+          </dict>
+        </dict>
+        <key>name</key>
+        <string>meta.define-trait</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>begin</key>
+            <string>(?x) (\() \s*</string>
+            <key>end</key>
+            <string>(\))</string>
+            <key>beginCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.define-trait-body.start.clarity</string>
+              </dict>
+            </dict>
+            <key>endCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.define-trait-body.end.clarity</string>
+              </dict>
+            </dict>
+            <key>name</key>
+            <string>meta.define-trait-body</string>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>include</key>
+                <string>#expression</string>
+              </dict>
+              <dict>
+                <key>begin</key>
+                <string>(?x) (\() \s* ([a-zA-Z][a-zA-Z0-9_\-\!\?]+\??) \s+</string>
+                <key>end</key>
+                <string>(\))</string>
+                <key>beginCaptures</key>
+                <dict>
+                  <key>1</key>
+                  <dict>
+                    <key>name</key>
+                    <string>punctuation.trait-function.start.clarity</string>
+                  </dict>
+                  <key>2</key>
+                  <dict>
+                    <key>name</key>
+                    <string>entity.name.trait-function-name.clarity variable.other.clarity</string>
+                  </dict>
+                </dict>
+                <key>endCaptures</key>
+                <dict>
+                  <key>1</key>
+                  <dict>
+                    <key>name</key>
+                    <string>punctuation.trait-function.end.clarity</string>
+                  </dict>
+                </dict>
+                <key>name</key>
+                <string>meta.trait-function</string>
+                <key>patterns</key>
+                <array>
+                  <dict>
+                    <key>include</key>
+                    <string>#data-type</string>
+                  </dict>
+                  <dict>
+                    <key>begin</key>
+                    <string>(?x) (\() \s*</string>
+                    <key>end</key>
+                    <string>(\))</string>
+                    <key>beginCaptures</key>
+                    <dict>
+                      <key>1</key>
+                      <dict>
+                        <key>name</key>
+                        <string>punctuation.trait-function-args.start.clarity</string>
+                      </dict>
+                    </dict>
+                    <key>endCaptures</key>
+                    <dict>
+                      <key>1</key>
+                      <dict>
+                        <key>name</key>
+                        <string>punctuation.trait-function-args.end.clarity</string>
+                      </dict>
+                    </dict>
+                    <key>name</key>
+                    <string>meta.trait-function-args</string>
+                    <key>patterns</key>
+                    <array>
+                      <dict>
+                        <key>include</key>
+                        <string>#data-type</string>
+                      </dict>
+                    </array>
+                  </dict>
+                </array>
+              </dict>
+            </array>
+          </dict>
+        </array>
+      </dict>
+      <key>use-trait</key>
+      <dict>
+        <key>begin</key>
+        <string>(?x) (\() \s* (use-trait) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+</string>
+        <key>end</key>
+        <string>(\))</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.use-trait.start.clarity</string>
+          </dict>
+          <key>2</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.declaration.use-trait.clarity</string>
+          </dict>
+          <key>3</key>
+          <dict>
+            <key>name</key>
+            <string>entity.name.trait-alias.clarity variable.other.clarity</string>
+          </dict>
+        </dict>
+        <key>endCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.use-trait.end.clarity</string>
+          </dict>
+        </dict>
+        <key>name</key>
+        <string>meta.use-trait</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#literal</string>
+          </dict>
+        </array>
+      </dict>
+      <key>define-constant</key>
+      <dict>
+        <key>begin</key>
+        <string>(?x) (\() \s* (define-constant) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+</string>
+        <key>end</key>
+        <string>(\))</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.define-constant.start.clarity</string>
+          </dict>
+          <key>2</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.declaration.define-constant.clarity</string>
+          </dict>
+          <key>3</key>
+          <dict>
+            <key>name</key>
+            <string>entity.name.constant-name.clarity variable.other.clarity</string>
+          </dict>
+        </dict>
+        <key>endCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.define-constant.end.clarity</string>
+          </dict>
+        </dict>
+        <key>name</key>
+        <string>meta.define-constant</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#expression</string>
+          </dict>
+        </array>
+      </dict>
+      <key>define-data-var</key>
+      <dict>
+        <key>begin</key>
+        <string>(?x) (\() \s* (define-data-var) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+</string>
+        <key>end</key>
+        <string>(\))</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.define-data-var.start.clarity</string>
+          </dict>
+          <key>2</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.declaration.define-data-var.clarity</string>
+          </dict>
+          <key>3</key>
+          <dict>
+            <key>name</key>
+            <string>entity.name.data-var-name.clarity variable.other.clarity</string>
+          </dict>
+        </dict>
+        <key>endCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.define-data-var.end.clarity</string>
+          </dict>
+        </dict>
+        <key>name</key>
+        <string>meta.define-data-var</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#data-type</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#expression</string>
+          </dict>
+        </array>
+      </dict>
+      <key>define-map</key>
+      <dict>
+        <key>begin</key>
+        <string>(?x) (\() \s* (define-map) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+</string>
+        <key>end</key>
+        <string>(\))</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.define-map.start.clarity</string>
+          </dict>
+          <key>2</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.declaration.define-map.clarity</string>
+          </dict>
+          <key>3</key>
+          <dict>
+            <key>name</key>
+            <string>entity.name.map-name.clarity variable.other.clarity</string>
+          </dict>
+        </dict>
+        <key>endCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.define-map.end.clarity</string>
+          </dict>
+        </dict>
+        <key>name</key>
+        <string>meta.define-map</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#data-type</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#expression</string>
+          </dict>
+        </array>
+      </dict>
+      <key>literal</key>
+      <dict>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#number-literal</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#bool-literal</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#string-literal</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#tuple-literal</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#principal-literal</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#list-literal</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#optional-literal</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#response-literal</string>
+          </dict>
+        </array>
+        <key>repository</key>
+        <dict>
+          <key>number-literal</key>
+          <dict>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>comment</key>
+                <string>unsigned integers</string>
+                <key>name</key>
+                <string>constant.numeric.uint.clarity</string>
+                <key>match</key>
+                <string>\bu\d+\b</string>
+              </dict>
+              <dict>
+                <key>comment</key>
+                <string>signed integers</string>
+                <key>name</key>
+                <string>constant.numeric.int.clarity</string>
+                <key>match</key>
+                <string>\b\d+\b</string>
+              </dict>
+              <dict>
+                <key>comment</key>
+                <string>hexadecimals</string>
+                <key>name</key>
+                <string>constant.numeric.hex.clarity</string>
+                <key>match</key>
+                <string>\b0x[0-9a-f]*\b</string>
+              </dict>
+            </array>
+          </dict>
+          <key>bool-literal</key>
+          <dict>
+            <key>name</key>
+            <string>constant.language.bool.clarity</string>
+            <key>match</key>
+            <string>\b(true|false)\b</string>
+          </dict>
+          <key>string-literal</key>
+          <dict>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>name</key>
+                <string>string.quoted.double.clarity</string>
+                <key>begin</key>
+                <string>(u?)(")</string>
+                <key>beginCaptures</key>
+                <dict>
+                  <key>1</key>
+                  <dict>
+                    <key>name</key>
+                    <string>string.quoted.utf8.clarity</string>
+                  </dict>
+                  <key>2</key>
+                  <dict>
+                    <key>name</key>
+                    <string>punctuation.definition.string.begin.clarity</string>
+                  </dict>
+                </dict>
+                <key>end</key>
+                <string>"</string>
+                <key>endCaptures</key>
+                <dict>
+                  <key>1</key>
+                  <dict>
+                    <key>name</key>
+                    <string>punctuation.definition.string.end.clarity</string>
+                  </dict>
+                </dict>
+                <key>patterns</key>
+                <array>
+                  <dict>
+                    <key>name</key>
+                    <string>constant.character.escape.quote</string>
+                    <key>match</key>
+                    <string>\\.</string>
+                  </dict>
+                </array>
+              </dict>
+            </array>
+          </dict>
+          <key>tuple-literal</key>
+          <dict>
+            <key>begin</key>
+            <string>(\{)</string>
+            <key>end</key>
+            <string>(\})</string>
+            <key>beginCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.tuple.start.clarity</string>
+              </dict>
+            </dict>
+            <key>endCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.tuple.end.clarity</string>
+              </dict>
+            </dict>
+            <key>name</key>
+            <string>meta.tuple</string>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>name</key>
+                <string>entity.name.tag.tuple-key.clarity</string>
+                <key>match</key>
+                <string>([a-zA-Z][a-zA-Z0-9_\-\!\?]*)(?=:)</string>
+              </dict>
+              <dict>
+                <key>include</key>
+                <string>#expression</string>
+              </dict>
+              <dict>
+                <key>include</key>
+                <string>#user-func</string>
+              </dict>
+            </array>
+          </dict>
+          <key>principal-literal</key>
+          <dict>
+            <key>name</key>
+            <string>constant.other.principal.clarity</string>
+            <key>match</key>
+            <string>(?x)  \'[0-9A-Z]{28,41}(:?\.[a-zA-Z][a-zA-Z0-9\-]+){0,2} | (\.[a-zA-Z][a-zA-Z0-9\-]*){1,2} (?=[\s(){},]|$)</string>
+          </dict>
+          <key>list-literal</key>
+          <dict>
+            <key>begin</key>
+            <string>(?x) (\() \s* (list) \s+</string>
+            <key>end</key>
+            <string>(\))</string>
+            <key>beginCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.list.start.clarity</string>
+              </dict>
+              <key>2</key>
+              <dict>
+                <key>name</key>
+                <string>entity.name.type.list.clarity</string>
+              </dict>
+            </dict>
+            <key>endCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>names</key>
+                <string>punctuation.list.end.clarity</string>
+              </dict>
+            </dict>
+            <key>name</key>
+            <string>meta.list</string>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>include</key>
+                <string>#expression</string>
+              </dict>
+              <dict>
+                <key>include</key>
+                <string>#user-func</string>
+              </dict>
+            </array>
+          </dict>
+          <key>optional-literal</key>
+          <dict>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>match</key>
+                <string>\b(none)\b</string>
+                <key>name</key>
+                <string>constant.language.none.clarity</string>
+              </dict>
+              <dict>
+                <key>begin</key>
+                <string>(?x) (\() \s* (some) \s+</string>
+                <key>end</key>
+                <string>(\))</string>
+                <key>beginCaptures</key>
+                <dict>
+                  <key>1</key>
+                  <dict>
+                    <key>name</key>
+                    <string>punctuation.some.start.clarity</string>
+                  </dict>
+                  <key>2</key>
+                  <dict>
+                    <key>name</key>
+                    <string>constant.language.some.clarity</string>
+                  </dict>
+                </dict>
+                <key>endCaptures</key>
+                <dict>
+                  <key>1</key>
+                  <dict>
+                    <key>name</key>
+                    <string>punctuation.some.end.clarity</string>
+                  </dict>
+                </dict>
+                <key>name</key>
+                <string>meta.some</string>
+                <key>patterns</key>
+                <array>
+                  <dict>
+                    <key>include</key>
+                    <string>#expression</string>
+                  </dict>
+                </array>
+              </dict>
+            </array>
+          </dict>
+          <key>response-literal</key>
+          <dict>
+            <key>begin</key>
+            <string>(?x) (\() \s* (ok|err) \s+</string>
+            <key>end</key>
+            <string>(\))</string>
+            <key>beginCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.response.start.clarity</string>
+              </dict>
+              <key>2</key>
+              <dict>
+                <key>name</key>
+                <string>constant.language.ok-err.clarity</string>
+              </dict>
+            </dict>
+            <key>endCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.response.end.clarity</string>
+              </dict>
+            </dict>
+            <key>name</key>
+            <string>meta.response</string>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>include</key>
+                <string>#expression</string>
+              </dict>
+              <dict>
+                <key>include</key>
+                <string>#user-func</string>
+              </dict>
+            </array>
+          </dict>
+        </dict>
+      </dict>
+      <key>data-type</key>
+      <dict>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#comment</string>
+          </dict>
+          <dict>
+            <key>comment</key>
+            <string>numerics</string>
+            <key>name</key>
+            <string>entity.name.type.numeric.clarity</string>
+            <key>match</key>
+            <string>\b(uint|int)\b</string>
+          </dict>
+          <dict>
+            <key>comment</key>
+            <string>principal</string>
+            <key>name</key>
+            <string>entity.name.type.principal.clarity</string>
+            <key>match</key>
+            <string>\b(principal)\b</string>
+          </dict>
+          <dict>
+            <key>comment</key>
+            <string>bool</string>
+            <key>name</key>
+            <string>entity.name.type.bool.clarity</string>
+            <key>match</key>
+            <string>\b(bool)\b</string>
+          </dict>
+          <dict>
+            <key>match</key>
+            <string>(?x) (\() \s* (?:(string-ascii|string-utf8)\s+(\d+)) \s* (\))</string>
+            <key>captures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.string-def.start.clarity</string>
+              </dict>
+              <key>2</key>
+              <dict>
+                <key>name</key>
+                <string>entity.name.type.string.clarity</string>
+              </dict>
+              <key>3</key>
+              <dict>
+                <key>name</key>
+                <string>constant.numeric.string-len.clarity</string>
+              </dict>
+              <key>4</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.string-def.end.clarity</string>
+              </dict>
+            </dict>
+          </dict>
+          <dict>
+            <key>match</key>
+            <string>(?x) (\() \s* (buff)\s+(\d+)\s* (\))</string>
+            <key>captures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.buff-def.start.clarity</string>
+              </dict>
+              <key>2</key>
+              <dict>
+                <key>name</key>
+                <string>entity.name.type.buff.clarity</string>
+              </dict>
+              <key>3</key>
+              <dict>
+                <key>name</key>
+                <string>constant.numeric.buf-len.clarity</string>
+              </dict>
+              <key>4</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.buff-def.end.clarity</string>
+              </dict>
+            </dict>
+          </dict>
+          <dict>
+            <key>comment</key>
+            <string>optional</string>
+            <key>begin</key>
+            <string>(?x) (\() \s* (optional)\s+</string>
+            <key>beginCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.optional-def.start.clarity</string>
+              </dict>
+              <key>2</key>
+              <dict>
+                <key>name</key>
+                <string>storage.type.modifier</string>
+              </dict>
+            </dict>
+            <key>end</key>
+            <string>(\))</string>
+            <key>endCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.optional-def.end.clarity</string>
+              </dict>
+            </dict>
+            <key>name</key>
+            <string>meta.optional-def</string>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>include</key>
+                <string>#data-type</string>
+              </dict>
+            </array>
+          </dict>
+          <dict>
+            <key>comment</key>
+            <string>response</string>
+            <key>begin</key>
+            <string>(?x) (\() \s* (response)\s+</string>
+            <key>beginCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.response-def.start.clarity</string>
+              </dict>
+              <key>2</key>
+              <dict>
+                <key>name</key>
+                <string>storage.type.modifier</string>
+              </dict>
+            </dict>
+            <key>end</key>
+            <string>(\))</string>
+            <key>endCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.response-def.end.clarity</string>
+              </dict>
+            </dict>
+            <key>name</key>
+            <string>meta.response-def</string>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>include</key>
+                <string>#data-type</string>
+              </dict>
+            </array>
+          </dict>
+          <dict>
+            <key>comment</key>
+            <string>list</string>
+            <key>begin</key>
+            <string>(?x) (\() \s* (list) \s+ (\d+) \s+</string>
+            <key>end</key>
+            <string>(\))</string>
+            <key>beginCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.list-def.start.clarity</string>
+              </dict>
+              <key>2</key>
+              <dict>
+                <key>name</key>
+                <string>entity.name.type.list.clarity</string>
+              </dict>
+              <key>3</key>
+              <dict>
+                <key>name</key>
+                <string>constant.numeric.list-len.clarity</string>
+              </dict>
+            </dict>
+            <key>endCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.list-def.end.clarity</string>
+              </dict>
+            </dict>
+            <key>name</key>
+            <string>meta.list-def</string>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>include</key>
+                <string>#data-type</string>
+              </dict>
+            </array>
+          </dict>
+          <dict>
+            <key>begin</key>
+            <string>(\{)</string>
+            <key>beginCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.tuple-def.start.clarity</string>
+              </dict>
+            </dict>
+            <key>end</key>
+            <string>(\})</string>
+            <key>endCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.tuple-def.end.clarity</string>
+              </dict>
+            </dict>
+            <key>name</key>
+            <string>meta.tuple-def</string>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>name</key>
+                <string>entity.name.tag.tuple-data-type-key.clarity</string>
+                <key>match</key>
+                <string>([a-zA-Z][a-zA-Z0-9_\-\!\?]*)(?=:)</string>
+              </dict>
+              <dict>
+                <key>include</key>
+                <string>#data-type</string>
+              </dict>
+            </array>
+          </dict>
+        </array>
+      </dict>
+      <key>built-in-func</key>
+      <dict>
+        <key>begin</key>
+        <string>(?x) (\() \s* (\-|\+|&lt;\=|&gt;\=|&lt;|&gt;|\*|/|and|append|as-contract|as-max-len\?|asserts!|at-block|begin|bit-and|bit-not|bit-or|bit-shift-left|bit-shift-right|bit-xor|buff-to-int-be|buff-to-int-le|buff-to-uint-be|buff-to-uint-le|concat|contract-call\?|contract-of|default-to|element-at|element-at\?|filter|fold|from-consensus-buff\?|ft-burn\?|ft-get-balance|ft-get-supply|ft-mint\?|ft-transfer\?|get-block-info\?|get-burn-block-info\?|hash160|if|impl-trait|index-of|index-of\?|int-to-ascii|int-to-utf8|is-eq|is-err|is-none|is-ok|is-some|is-standard|keccak256|len|log2|map|match|merge|mod|nft-burn\?|nft-get-owner\?|nft-mint\?|nft-transfer\?|not|or|pow|principal-construct\?|principal-destruct\?|principal-of\?|print|replace-at\?|secp256k1-recover\?|secp256k1-verify|sha256|sha512|sha512/256|slice\?|sqrti|string-to-int\?|string-to-uint\?|stx-account|stx-burn\?|stx-get-balance|stx-transfer-memo\?|stx-transfer\?|to-consensus-buff\?|to-int|to-uint|try!|unwrap!|unwrap-err!|unwrap-err-panic|unwrap-panic|xor) \s+</string>
+        <key>end</key>
+        <string>(\))</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.built-in-function.start.clarity</string>
+          </dict>
+          <key>2</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.declaration.built-in-function.clarity</string>
+          </dict>
+        </dict>
+        <key>endCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.built-in-function.end.clarity</string>
+          </dict>
+        </dict>
+        <key>name</key>
+        <string>meta.built-in-function</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#expression</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#user-func</string>
+          </dict>
+        </array>
+      </dict>
+      <key>get-set-func</key>
+      <dict>
+        <key>name</key>
+        <string>meta.get-set-func</string>
+        <key>begin</key>
+        <string>(?x) (\() \s* (var-get|var-set|map-get\?|map-set|map-insert|map-delete|get) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s*</string>
+        <key>end</key>
+        <string>(\))</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.get-set-func.start.clarity</string>
+          </dict>
+          <key>2</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.control.clarity</string>
+          </dict>
+          <key>3</key>
           <dict>
             <key>name</key>
             <string>variable.other.clarity</string>
           </dict>
         </dict>
-      </dict>
-      <key>tuple-key</key>
-      <dict>
-        <key>name</key>
-        <string>entity.name.type.clarity</string>
-        <key>match</key>
-        <string>(?x)
-  ([a-z][a-zA-Z0-9_-]+)(?=:)
-</string>
-      </dict>
-      <key>args</key>
-      <dict>
-        <key>begin</key>
-        <string>(?x)
-  (?&lt;=^|[(]) \s*
-  ([a-z][a-zA-Z0-9_-]+) \s*
-</string>
-        <key>beginCaptures</key>
-        <dict>
-          <key>0</key>
-          <dict>
-            <key>name</key>
-            <string>variable.parameter.clarity</string>
-          </dict>
-        </dict>
-        <key>end</key>
-        <string>\)</string>
         <key>endCaptures</key>
         <dict>
-          <key>0</key>
+          <key>1</key>
           <dict>
             <key>name</key>
-            <string>punctuation.section.end.clarity</string>
+            <string>punctuation.get-set-func.end.clarity</string>
           </dict>
         </dict>
         <key>patterns</key>
         <array>
           <dict>
             <key>include</key>
-            <string>#datatype</string>
+            <string>#expression</string>
+          </dict>
+        </array>
+      </dict>
+      <key>let-func</key>
+      <dict>
+        <key>begin</key>
+        <string>(?x) (\() \s* (let) \s*</string>
+        <key>end</key>
+        <string>(\))</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.let-function.start.clarity</string>
+          </dict>
+          <key>2</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.declaration.let-function.clarity</string>
+          </dict>
+        </dict>
+        <key>endCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.let-function.end.clarity</string>
+          </dict>
+        </dict>
+        <key>name</key>
+        <string>meta.let-function</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#expression</string>
           </dict>
           <dict>
             <key>include</key>
-            <string>#tuple-key</string>
+            <string>#user-func</string>
+          </dict>
+          <dict>
+            <key>begin</key>
+            <string>(?x) (\() \s*</string>
+            <key>end</key>
+            <string>(\))</string>
+            <key>beginCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.let-var.start.clarity</string>
+              </dict>
+            </dict>
+            <key>endCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.let-var.end.clarity</string>
+              </dict>
+            </dict>
+            <key>name</key>
+            <string>meta.let-var</string>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>begin</key>
+                <string>(?x) (\() ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+</string>
+                <key>end</key>
+                <string>(\))</string>
+                <key>beginCaptures</key>
+                <dict>
+                  <key>1</key>
+                  <dict>
+                    <key>name</key>
+                    <string>punctuation.let-local-var.start.clarity</string>
+                  </dict>
+                  <key>2</key>
+                  <dict>
+                    <key>name</key>
+                    <string>entity.name.let-local-var-name.clarity variable.parameter.clarity</string>
+                  </dict>
+                </dict>
+                <key>endCaptures</key>
+                <dict>
+                  <key>1</key>
+                  <dict>
+                    <key>name</key>
+                    <string>punctuation.let-local-var.end.clarity</string>
+                  </dict>
+                </dict>
+                <key>name</key>
+                <string>meta.let-local-var</string>
+                <key>patterns</key>
+                <array>
+                  <dict>
+                    <key>include</key>
+                    <string>#expression</string>
+                  </dict>
+                  <dict>
+                    <key>include</key>
+                    <string>#user-func</string>
+                  </dict>
+                </array>
+              </dict>
+              <dict>
+                <key>include</key>
+                <string>#expression</string>
+              </dict>
+            </array>
+          </dict>
+        </array>
+      </dict>
+      <key>user-func</key>
+      <dict>
+        <key>begin</key>
+        <string>(?x) (\() \s* (([a-zA-Z][a-zA-Z0-9_\-\!\?]*)) \s*</string>
+        <key>end</key>
+        <string>(\))</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.user-function.start.clarity</string>
+          </dict>
+          <key>2</key>
+          <dict>
+            <key>name</key>
+            <string>entity.name.function.clarity</string>
+          </dict>
+        </dict>
+        <key>endCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.user-function.end.clarity</string>
+          </dict>
+        </dict>
+        <key>name</key>
+        <string>meta.user-function</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#expression</string>
           </dict>
           <dict>
             <key>include</key>
-            <string>#number</string>
+            <string>$self</string>
           </dict>
         </array>
       </dict>
