@@ -93,7 +93,7 @@
         <key>name</key>
         <string>constant.language.clarity</string>
         <key>match</key>
-        <string>\b(?:block-height|burn-block-height|chain-id|contract-caller|is-in-regtest|stx-liquid-supply|tx-sender|tx-sponsor?)\b</string>
+        <string>(?&lt;!\S)(?!-)\b(?:block-height|burn-block-height|chain-id|contract-caller|is-in-regtest|stx-liquid-supply|tx-sender|tx-sponsor?)\b(?!\s*-)</string>
       </dict>
       <key>define-function</key>
       <dict>
@@ -131,12 +131,8 @@
             <string>#expression</string>
           </dict>
           <dict>
-            <key>include</key>
-            <string>#user-func</string>
-          </dict>
-          <dict>
             <key>begin</key>
-            <string>(?x) (\() \s* ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s*</string>
+            <string>(?x) (\() \s* ([a-zA-Z][\w\?\!\-]*) \s*</string>
             <key>end</key>
             <string>(\))</string>
             <key>beginCaptures</key>
@@ -166,7 +162,7 @@
             <array>
               <dict>
                 <key>begin</key>
-                <string>(?x) (\() \s* ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+</string>
+                <string>(?x) (\() \s* ([a-zA-Z][\w\?\!\-]*) \s+</string>
                 <key>end</key>
                 <string>(\))</string>
                 <key>beginCaptures</key>
@@ -202,12 +198,16 @@
               </dict>
             </array>
           </dict>
+          <dict>
+            <key>include</key>
+            <string>#user-func</string>
+          </dict>
         </array>
       </dict>
       <key>define-fungible-token</key>
       <dict>
         <key>match</key>
-        <string>(?x) (\() \s* (define-fungible-token) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) (?:\s+(u\d+))?</string>
+        <string>(?x) (\() \s* (define-fungible-token) \s+ ([a-zA-Z][\w\?\!\-]*) (?:\s+(u\d+))?</string>
         <key>captures</key>
         <dict>
           <key>1</key>
@@ -240,7 +240,7 @@
       <key>define-non-fungible-token</key>
       <dict>
         <key>begin</key>
-        <string>(?x) (\() \s* (define-non-fungible-token) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+</string>
+        <string>(?x) (\() \s* (define-non-fungible-token) \s+ ([a-zA-Z][\w\?\!\-]*) \s+</string>
         <key>end</key>
         <string>(\))</string>
         <key>beginCaptures</key>
@@ -282,7 +282,7 @@
       <key>define-trait</key>
       <dict>
         <key>begin</key>
-        <string>(?x) (\() \s* (define-trait) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+</string>
+        <string>(?x) (\() \s* (define-trait) \s+ ([a-zA-Z][\w\?\!\-]*) \s+</string>
         <key>end</key>
         <string>(\))</string>
         <key>beginCaptures</key>
@@ -346,7 +346,7 @@
               </dict>
               <dict>
                 <key>begin</key>
-                <string>(?x) (\() \s* ([a-zA-Z][a-zA-Z0-9_\-\!\?]+\??) \s+</string>
+                <string>(?x) (\() \s* ([a-zA-Z][\w\!\?\-]*) \s+</string>
                 <key>end</key>
                 <string>(\))</string>
                 <key>beginCaptures</key>
@@ -359,7 +359,7 @@
                   <key>2</key>
                   <dict>
                     <key>name</key>
-                    <string>entity.name.trait-function-name.clarity variable.other.clarity</string>
+                    <string>entity.name.function.clarity</string>
                   </dict>
                 </dict>
                 <key>endCaptures</key>
@@ -418,7 +418,7 @@
       <key>use-trait</key>
       <dict>
         <key>begin</key>
-        <string>(?x) (\() \s* (use-trait) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+</string>
+        <string>(?x) (\() \s* (use-trait) \s+ ([a-zA-Z][\w\?\!\-]*) \s+</string>
         <key>end</key>
         <string>(\))</string>
         <key>beginCaptures</key>
@@ -460,7 +460,7 @@
       <key>define-constant</key>
       <dict>
         <key>begin</key>
-        <string>(?x) (\() \s* (define-constant) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+</string>
+        <string>(?x) (\() \s* (define-constant) \s+ ([a-zA-Z][\w\?\!\-]*) \s+</string>
         <key>end</key>
         <string>(\))</string>
         <key>beginCaptures</key>
@@ -502,7 +502,7 @@
       <key>define-data-var</key>
       <dict>
         <key>begin</key>
-        <string>(?x) (\() \s* (define-data-var) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+</string>
+        <string>(?x) (\() \s* (define-data-var) \s+ ([a-zA-Z][\w\?\!\-]*) \s+</string>
         <key>end</key>
         <string>(\))</string>
         <key>beginCaptures</key>
@@ -548,7 +548,7 @@
       <key>define-map</key>
       <dict>
         <key>begin</key>
-        <string>(?x) (\() \s* (define-map) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+</string>
+        <string>(?x) (\() \s* (define-map) \s+ ([a-zA-Z][\w\?\!\-]*) \s+</string>
         <key>end</key>
         <string>(\))</string>
         <key>beginCaptures</key>
@@ -640,7 +640,7 @@
                 <key>name</key>
                 <string>constant.numeric.uint.clarity</string>
                 <key>match</key>
-                <string>\bu\d+\b</string>
+                <string>(?&lt;!\S)(?!-)\bu\d+\b(?!\s*-)</string>
               </dict>
               <dict>
                 <key>comment</key>
@@ -648,7 +648,7 @@
                 <key>name</key>
                 <string>constant.numeric.int.clarity</string>
                 <key>match</key>
-                <string>\b\d+\b</string>
+                <string>(?&lt;!\S)(?!-)\b\d+\b(?!\s*-)</string>
               </dict>
               <dict>
                 <key>comment</key>
@@ -656,7 +656,7 @@
                 <key>name</key>
                 <string>constant.numeric.hex.clarity</string>
                 <key>match</key>
-                <string>\b0x[0-9a-f]*\b</string>
+                <string>(?&lt;!\S)(?!-)\b0x[0-9a-f]*\b(?!\s*-)</string>
               </dict>
             </array>
           </dict>
@@ -665,7 +665,7 @@
             <key>name</key>
             <string>constant.language.bool.clarity</string>
             <key>match</key>
-            <string>\b(true|false)\b</string>
+            <string>(?&lt;!\S)(?!-)\b(true|false)\b(?!\s*-)</string>
           </dict>
           <key>string-literal</key>
           <dict>
@@ -741,7 +741,7 @@
                 <key>name</key>
                 <string>entity.name.tag.tuple-key.clarity</string>
                 <key>match</key>
-                <string>([a-zA-Z][a-zA-Z0-9_\-\!\?]*)(?=:)</string>
+                <string>([a-zA-Z][\w\?\!\-]*)(?=:)</string>
               </dict>
               <dict>
                 <key>include</key>
@@ -807,7 +807,7 @@
             <array>
               <dict>
                 <key>match</key>
-                <string>\b(none)\b</string>
+                <string>(?&lt;!\S)(?!-)\b(none)\b(?!\s*-)</string>
                 <key>name</key>
                 <string>constant.language.none.clarity</string>
               </dict>
@@ -932,22 +932,22 @@
               <key>1</key>
               <dict>
                 <key>name</key>
-                <string>punctuation.string-def.start.clarity</string>
+                <string>punctuation.string_type-def.start.clarity</string>
               </dict>
               <key>2</key>
               <dict>
                 <key>name</key>
-                <string>entity.name.type.string.clarity</string>
+                <string>entity.name.type.string_type.clarity</string>
               </dict>
               <key>3</key>
               <dict>
                 <key>name</key>
-                <string>constant.numeric.string-len.clarity</string>
+                <string>constant.numeric.string_type-len.clarity</string>
               </dict>
               <key>4</key>
               <dict>
                 <key>name</key>
-                <string>punctuation.string-def.end.clarity</string>
+                <string>punctuation.string_type-def.end.clarity</string>
               </dict>
             </dict>
           </dict>
@@ -1126,7 +1126,7 @@
                 <key>name</key>
                 <string>entity.name.tag.tuple-data-type-key.clarity</string>
                 <key>match</key>
-                <string>([a-zA-Z][a-zA-Z0-9_\-\!\?]*)(?=:)</string>
+                <string>([a-zA-Z][\w\?\!\-]*)(?=:)</string>
               </dict>
               <dict>
                 <key>include</key>
@@ -1182,7 +1182,7 @@
         <key>name</key>
         <string>meta.get-set-func</string>
         <key>begin</key>
-        <string>(?x) (\() \s* (var-get|var-set|map-get\?|map-set|map-insert|map-delete|get) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s*</string>
+        <string>(?x) (\() \s* (var-get|var-set|map-get\?|map-set|map-insert|map-delete|get) \s+ ([a-zA-Z][\w\?\!\-]*) \s*</string>
         <key>end</key>
         <string>(\))</string>
         <key>beginCaptures</key>
@@ -1285,7 +1285,7 @@
             <array>
               <dict>
                 <key>begin</key>
-                <string>(?x) (\() ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+</string>
+                <string>(?x) (\() ([a-zA-Z][\w\?\!\-]*) \s+</string>
                 <key>end</key>
                 <string>(\))</string>
                 <key>beginCaptures</key>
@@ -1334,7 +1334,7 @@
       <key>user-func</key>
       <dict>
         <key>begin</key>
-        <string>(?x) (\() \s* (([a-zA-Z][a-zA-Z0-9_\-\!\?]*)) \s*</string>
+        <string>(?x) (\() \s* (([a-zA-Z][\w\?\!\-]*)) \s*</string>
         <key>end</key>
         <string>(\))</string>
         <key>beginCaptures</key>

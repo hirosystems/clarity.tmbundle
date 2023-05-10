@@ -26,7 +26,7 @@ repository:
                   - include: "#get-set-func"
       keyword:
             name: constant.language.clarity
-            match: \b(?:block-height|burn-block-height|chain-id|contract-caller|is-in-regtest|stx-liquid-supply|tx-sender|tx-sponsor?)\b
+            match: (?<!\S)(?!-)\b(?:block-height|burn-block-height|chain-id|contract-caller|is-in-regtest|stx-liquid-supply|tx-sender|tx-sponsor?)\b(?!\s*-)
       define-function:
             begin: (?x) (\() \s* (define-(?:public|private|read-only)) \s+
             end: (\))
@@ -41,8 +41,7 @@ repository:
             name: meta.define-function
             patterns:
                   - include: "#expression"
-                  - include: "#user-func"
-                  - begin: (?x) (\() \s* ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s*
+                  - begin: (?x) (\() \s* ([a-zA-Z][\w\?\!\-]*) \s*
                     end: (\))
                     beginCaptures:
                           "1":
@@ -54,7 +53,7 @@ repository:
                                 name: punctuation.function-signature.end.clarity
                     name: meta.define-function-signature
                     patterns:
-                          - begin: (?x) (\() \s* ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+
+                          - begin: (?x) (\() \s* ([a-zA-Z][\w\?\!\-]*) \s+
                             end: (\))
                             beginCaptures:
                                   "1":
@@ -67,8 +66,9 @@ repository:
                             name: meta.function-argument
                             patterns:
                                   - include: "#data-type"
+                  - include: "#user-func"
       define-fungible-token:
-            match: (?x) (\() \s* (define-fungible-token) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*)
+            match: (?x) (\() \s* (define-fungible-token) \s+ ([a-zA-Z][\w\?\!\-]*)
                   (?:\s+(u\d+))?
             captures:
                   "1":
@@ -82,8 +82,7 @@ repository:
                   "5":
                         name: punctuation.define-fungible-token.end.clarity
       define-non-fungible-token:
-            begin: (?x) (\() \s* (define-non-fungible-token) \s+
-                  ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+
+            begin: (?x) (\() \s* (define-non-fungible-token) \s+ ([a-zA-Z][\w\?\!\-]*) \s+
             end: (\))
             beginCaptures:
                   "1":
@@ -99,7 +98,7 @@ repository:
             patterns:
                   - include: "#data-type"
       define-trait:
-            begin: (?x) (\() \s* (define-trait) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+
+            begin: (?x) (\() \s* (define-trait) \s+ ([a-zA-Z][\w\?\!\-]*) \s+
             end: (\))
             beginCaptures:
                   "1":
@@ -124,13 +123,13 @@ repository:
                     name: meta.define-trait-body
                     patterns:
                           - include: "#expression"
-                          - begin: (?x) (\() \s* ([a-zA-Z][a-zA-Z0-9_\-\!\?]+\??) \s+
+                          - begin: (?x) (\() \s* ([a-zA-Z][\w\!\?\-]*) \s+
                             end: (\))
                             beginCaptures:
                                   "1":
                                         name: punctuation.trait-function.start.clarity
                                   "2":
-                                        name: entity.name.trait-function-name.clarity variable.other.clarity
+                                        name: entity.name.function.clarity
                             endCaptures:
                                   "1":
                                         name: punctuation.trait-function.end.clarity
@@ -149,7 +148,7 @@ repository:
                                     patterns:
                                           - include: "#data-type"
       use-trait:
-            begin: (?x) (\() \s* (use-trait) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+
+            begin: (?x) (\() \s* (use-trait) \s+ ([a-zA-Z][\w\?\!\-]*) \s+
             end: (\))
             beginCaptures:
                   "1":
@@ -165,7 +164,7 @@ repository:
             patterns:
                   - include: "#literal"
       define-constant:
-            begin: (?x) (\() \s* (define-constant) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+
+            begin: (?x) (\() \s* (define-constant) \s+ ([a-zA-Z][\w\?\!\-]*) \s+
             end: (\))
             beginCaptures:
                   "1":
@@ -181,7 +180,7 @@ repository:
             patterns:
                   - include: "#expression"
       define-data-var:
-            begin: (?x) (\() \s* (define-data-var) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+
+            begin: (?x) (\() \s* (define-data-var) \s+ ([a-zA-Z][\w\?\!\-]*) \s+
             end: (\))
             beginCaptures:
                   "1":
@@ -198,7 +197,7 @@ repository:
                   - include: "#data-type"
                   - include: "#expression"
       define-map:
-            begin: (?x) (\() \s* (define-map) \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+
+            begin: (?x) (\() \s* (define-map) \s+ ([a-zA-Z][\w\?\!\-]*) \s+
             end: (\))
             beginCaptures:
                   "1":
@@ -229,16 +228,16 @@ repository:
                         patterns:
                               - comment: unsigned integers
                                 name: constant.numeric.uint.clarity
-                                match: \bu\d+\b
+                                match: (?<!\S)(?!-)\bu\d+\b(?!\s*-)
                               - comment: signed integers
                                 name: constant.numeric.int.clarity
-                                match: \b\d+\b
+                                match: (?<!\S)(?!-)\b\d+\b(?!\s*-)
                               - comment: hexadecimals
                                 name: constant.numeric.hex.clarity
-                                match: \b0x[0-9a-f]*\b
+                                match: (?<!\S)(?!-)\b0x[0-9a-f]*\b(?!\s*-)
                   bool-literal:
                         name: constant.language.bool.clarity
-                        match: \b(true|false)\b
+                        match: (?<!\S)(?!-)\b(true|false)\b(?!\s*-)
                   string-literal:
                         patterns:
                               - name: string.quoted.double.clarity
@@ -267,7 +266,7 @@ repository:
                         name: meta.tuple
                         patterns:
                               - name: entity.name.tag.tuple-key.clarity
-                                match: ([a-zA-Z][a-zA-Z0-9_\-\!\?]*)(?=:)
+                                match: ([a-zA-Z][\w\?\!\-]*)(?=:)
                               - include: "#expression"
                               - include: "#user-func"
                   principal-literal:
@@ -291,7 +290,7 @@ repository:
                               - include: "#user-func"
                   optional-literal:
                         patterns:
-                              - match: \b(none)\b
+                              - match: (?<!\S)(?!-)\b(none)\b(?!\s*-)
                                 name: constant.language.none.clarity
                               - begin: (?x) (\() \s* (some) \s+
                                 end: (\))
@@ -336,13 +335,13 @@ repository:
                   - match: (?x) (\() \s* (?:(string-ascii|string-utf8)\s+(\d+)) \s* (\))
                     captures:
                           "1":
-                                name: punctuation.string-def.start.clarity
+                                name: punctuation.string_type-def.start.clarity
                           "2":
-                                name: entity.name.type.string.clarity
+                                name: entity.name.type.string_type.clarity
                           "3":
-                                name: constant.numeric.string-len.clarity
+                                name: constant.numeric.string_type-len.clarity
                           "4":
-                                name: punctuation.string-def.end.clarity
+                                name: punctuation.string_type-def.end.clarity
                   - match: (?x) (\() \s* (buff)\s+(\d+)\s* (\))
                     captures:
                           "1":
@@ -408,7 +407,7 @@ repository:
                     name: meta.tuple-def
                     patterns:
                           - name: entity.name.tag.tuple-data-type-key.clarity
-                            match: ([a-zA-Z][a-zA-Z0-9_\-\!\?]*)(?=:)
+                            match: ([a-zA-Z][\w\?\!\-]*)(?=:)
                           - include: "#data-type"
       built-in-func:
             begin: (?x) (\() \s*
@@ -431,7 +430,7 @@ repository:
             name: meta.get-set-func
             begin: (?x) (\() \s*
                   (var-get|var-set|map-get\?|map-set|map-insert|map-delete|get)
-                  \s+ ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s*
+                  \s+ ([a-zA-Z][\w\?\!\-]*) \s*
             end: (\))
             beginCaptures:
                   "1":
@@ -470,7 +469,7 @@ repository:
                                 name: punctuation.let-var.end.clarity
                     name: meta.let-var
                     patterns:
-                          - begin: (?x) (\() ([a-zA-Z][a-zA-Z0-9_\-\!\?]*) \s+
+                          - begin: (?x) (\() ([a-zA-Z][\w\?\!\-]*) \s+
                             end: (\))
                             beginCaptures:
                                   "1":
@@ -486,7 +485,7 @@ repository:
                                   - include: "#user-func"
                           - include: "#expression"
       user-func:
-            begin: (?x) (\() \s* (([a-zA-Z][a-zA-Z0-9_\-\!\?]*)) \s*
+            begin: (?x) (\() \s* (([a-zA-Z][\w\?\!\-]*)) \s*
             end: (\))
             beginCaptures:
                   "1":
